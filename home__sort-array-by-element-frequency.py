@@ -1,6 +1,3 @@
-from collections import defaultdict
-
-
 def frequency_sort(items: list) -> list:
     return [e for e in sorted(items, key=lambda x: (items.count(x), -items.index(x)), reverse=True)]
 
