@@ -1,6 +1,22 @@
+# TODO solve it using regexp
+
 def backward_string_by_word(text: str) -> str:
-    # TODO
-    return " ".join(word[::-1] for word in text.split())
+    reversed_text = []
+
+    temp_word = []
+    for c in text:
+        if c.isspace():
+            if temp_word:
+                reversed_text.extend(reversed(temp_word))
+                temp_word = []
+            reversed_text.append(c)
+        else:
+            temp_word.append(c)
+    else:
+        if temp_word:
+            reversed_text.extend(reversed(temp_word))
+
+    return "".join(reversed_text)
 
 
 if __name__ == '__main__':
