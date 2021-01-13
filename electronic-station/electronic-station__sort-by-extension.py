@@ -2,8 +2,13 @@ from typing import List
 
 
 def sort_by_ext(files: List[str]) -> List[str]:
-    files.sort(key=lambda x: x.split(".")[-1])
-    print(files)
+    sort_alg = lambda e: (
+        int(bool(".".join(e.split(".")[:-1]))),
+        e.split(".")[-1],
+        ".".join(e.split(".")[:-1])
+    )
+
+    files.sort(key=sort_alg)
     return files
 
 
