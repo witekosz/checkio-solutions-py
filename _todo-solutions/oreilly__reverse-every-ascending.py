@@ -2,19 +2,21 @@ def reverse_ascending(items: list) -> list:
     ascending_sub_items = []
 
     temp_sub_lst = []
-    for i, e in enumerate(items):
-        print(e, items[i+1])
-        next_e = items[i+1]
-        if next_e > e:
+    iterator = enumerate(items)
+    for i, e in iterator:
+        try:
+            next_e = next(iterator)[1]
+            temp_sub_lst.append(e)
             temp_sub_lst.append(next_e)
-        else:
-            ascending_sub_items.extend(sorted(temp_sub_lst, reverse=True))
-            temp_sub_lst.clear()
-            ascending_sub_items.append(e)
-        print("temp_sub_lst", temp_sub_lst)
-        print("ascending_sub_items", ascending_sub_items)
-    print(items)
-    return items
+            if temp_sub_lst == sorted(temp_sub_lst):
+                print(temp_sub_lst)
+            else:
+                ascending_sub_items.extend(sorted(temp_sub_lst, reverse=True))
+                temp_sub_lst.clear()
+        except StopIteration:
+            pass
+    print(ascending_sub_items)
+    return ascending_sub_items
 
 
 if __name__ == '__main__':
