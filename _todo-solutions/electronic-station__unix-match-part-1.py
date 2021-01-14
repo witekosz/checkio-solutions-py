@@ -1,7 +1,20 @@
+import re
+
+
 def unix_match(filename: str, pattern: str) -> bool:
+    if not ("." in filename):
+        return False
+
     if pattern == "*":
-        return True
-    return filename == pattern
+        pattern = ""
+    if "*" in pattern:
+        pattern = pattern.replace("*", "\w+")
+    if "?" in pattern:
+        pattern = pattern.replace("?", ".")
+    print(pattern)
+    is_file = re.search(rf"{pattern}", filename)
+    print(is_file)
+    return bool(is_file)
 
 
 if __name__ == '__main__':
