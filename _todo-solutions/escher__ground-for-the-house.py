@@ -1,41 +1,20 @@
 def house(plan: str) -> int:
-    print(plan)
     rows = plan.strip().splitlines()
+    colums = list(map("".join, zip(*rows)))
 
-    min_x, max_x = 0, 0
-    for row in rows:
-        row_left_idx = row.find("#")
-        row_right_idx = row.rfind("#")
-        if row_left_idx != -1:
-            if row_left_idx < min_x:
-                min_x = row_left_idx + 1
-            if row_right_idx > max_x:
-                max_x = row_right_idx + 1
-            print(min_x, max_x)
-    print("end rows")
-    print("\n")
+    rows_idx = [i+1 for i, row in enumerate(rows) if "#" in row]
+    if rows_idx:
+        rows_len = len(list(range(rows_idx[0], rows_idx[-1] + 1)))
+    else:
+        rows_len = 0
 
-    colums = list(zip(*rows))
-    min_y, max_y = 0, 0
-    for column in colums:
-        column = "".join(column)
+    colums_idx = [i+1 for i, colum in enumerate(colums) if "#" in colum]
+    if colums_idx:
+        columns_len = len(list(range(colums_idx[0], colums_idx[-1] + 1)))
+    else:
+        columns_len = 0
 
-        column_left_idx = column.find("#")
-        column_right_idx = column.rfind("#")
-        if column_left_idx != -1:
-            if column_left_idx < min_y:
-                min_y = column_left_idx
-            if column_right_idx > max_y:
-                max_y = column_right_idx
-        print(min_y, max_y)
-    print("end columns")
-    print("\n")
-
-    print(max_x, min_x, max_y, min_y)
-    ret = (max_x - min_x) * (max_y - min_y)
-    print("ret", ret)
-    print("\n")
-    return ret
+    return rows_len * columns_len
 
 
 if __name__ == '__main__':
