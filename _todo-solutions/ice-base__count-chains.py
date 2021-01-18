@@ -1,23 +1,35 @@
 import math
 
+from collections import namedtuple
 from itertools import combinations
 from typing import List, Tuple
 
 
+Circle = namedtuple("Circle", "x y r")
+
 def count_chains(circles: List[Tuple[int, int, int]]) -> int:
+    circles = [Circle(*c) for c in circles]
     chains = 0
+    counted = set()
+    print(circles)
 
     for circle1, circle2 in combinations(circles, 2):
-        # print(circle1, circle2)
-        # for Python 3.8 and above
-        # dist = math.dist((circle1[0], circle1[1]), (circle2[0], circle2[1]))
-        dist = math.hypot(circle1[0] - circle2[0], circle1[1] - circle2[1])
-        radius_sum = circle1[2] + circle2[2]
+        print(circle1, circle2)
+        dist = math.dist((circle1.x, circle1.y), (circle2.x, circle2.y))
+        radius_sum = circle1.r + circle2.r
 
-        # print(dist, radius_sum)
+        print(dist, radius_sum)
         if dist >= radius_sum:
-            chains += 1
-
+            print("one")
+            if f"{hash(circle1)}:f{hash(circle2)}" in counted or f"{hash(circle2)}:f{hash(circle1)}" in counted:
+                pass
+            else:
+                chains += 1
+                counted.add(f"{hash(circle1)}:f{hash(circle2)}")
+                counted.add(f"{hash(circle2)}:f{hash(circle1)}")
+            print(counted)
+    print("chains: ", chains)
+    print("*"*20)
     return chains
 
 
