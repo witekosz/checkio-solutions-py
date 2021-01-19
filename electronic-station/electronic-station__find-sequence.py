@@ -1,23 +1,33 @@
 from itertools import chain
-from typing import List
+
+import numpy as np
 
 
-digits = [[d] * 4 for d in range(1, 10)]
+# TODO refactor
 
-def checkio(matrix: List[List[int]]) -> bool:
-    print(matrix)
+digits = [str(d) * 4 for d in range(1, 10)]
+
+def checkio(matrix: list[list[int]]) -> bool:
     rows = matrix
     columns = list(map(list, zip(*rows)))
-    diagonal = [row[i] for i, row in enumerate(rows)]
-    print(diagonal)
-    print(columns)
-    for e in chain(rows, columns):
+
+    array = np.array(matrix)
+    offsets = list(reversed([-e for e in range(len(rows[0]))])) + [e for e in range(1, len(rows[0]))]
+    diagonals = []
+    for e in offsets:
+        diagonals.append(np.diagonal(array, e))
+
+    array = np.rot90(array)
+    for e in offsets:
+        diagonals.append(np.diagonal(array, e))
+
+    for e in chain(rows, columns, diagonals):
+        e = "".join(str(c) for c in e)
+
         for seq in digits:
-            # print(seq, " in ", e, " = ", seq in e)
-            if seq == e or e.find(seq) != -1:
-                print(seq)
+            if seq == e or seq in e:
                 return True
-    else:       
+    else:     
         return False
 
 

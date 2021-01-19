@@ -23,7 +23,7 @@ def similar_triangles(coords_1: Coords, coords_2: Coords) -> bool:
         math.dist(coords_2[2], coords_2[0])
     )
     scale = tuple(map(lambda x: x[0] / x[1], zip(dist_coords_2, dist_coords_1)))
-    
+
     print(dist_coords_1)
     print(dist_coords_2)
     print(scale)
