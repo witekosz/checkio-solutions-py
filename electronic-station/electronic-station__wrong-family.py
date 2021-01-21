@@ -1,17 +1,21 @@
-# TODO refactor!!!
-
 class FamilyNode:
-    def __init__(self, name):
+    def __init__(self, name: str):
         self.name = name
         self.father = None
 
     def add_father(self, father):
         if father.name == self.name:
-            raise TypeError
+            raise TypeError("FamilyNode can not be father itself")
         elif self.father:
-            raise TypeError
+            raise TypeError("FamilyNode can not have multiple fathers")
         else:
             self.father = father
+
+    def find_first_ancestor(self, family_node):
+        if family_node.father is None:
+            return family_node
+        else:
+            return self.find_first_ancestor(family_node.father)
 
     def __eq__(self, other):
         if isinstance(other, FamilyNode):
@@ -29,49 +33,15 @@ class FamilyNode:
         return f"FamilyNode(name={self.name})"
 
 
-def find_first_father(family_node):
-    if family_node.father is None:
-        return family_node
-    else:
-        return find_first_father(family_node.father)
-
-
 def is_family(tree: list[list[str]]) -> bool:
-    # family_tree = []
-
-    # print(tree)
-    # for father, son in tree:
-    #     print(father, "=>", son)
-    #     father_in_family = list(filter(lambda x: x.father_name == father, family_tree))
-    #     print("len =", len(father_in_family))
-    #     if not father_in_family:
-    #         family_tree.append(FatherNode(father, [son]))
-    #     elif len(father_in_family) == 1:
-    #         father_in_family[0].children_names.append(son)
-    #     elif len(father_in_family) > 1:
-    #         print("Error? ", father_in_family)
-    # three_dict = {k: v for k, v in tree}
-    # print(three_dict)
-
-    # while tree:
-    #     relation = tree.pop()
-    #     print(relation)
-
-    # print(f"{family_tree=} ")
-    # print("*"*10)
-    # return True
-
     family_dict = dict()
 
     for father_name, son_name in tree:
-        print("rel:", father_name, son_name)
-        print(family_dict)
         if son_name in family_dict:
             node = family_dict[son_name]
         else:
             node = FamilyNode(son_name)
             family_dict[son_name] = node
-        print(node)
 
         if father_name in family_dict:
             father_node = family_dict[father_name]
@@ -86,11 +56,8 @@ def is_family(tree: list[list[str]]) -> bool:
             node.add_father(father_node)
         except TypeError:
             return False
-        print(node)
-        print("...")
-        print(family_dict)
 
-    if len(set(find_first_father(e) for e in family_dict.values())) > 1:
+    if len(set(e.find_first_ancestor(e) for e in family_dict.values())) > 1:
         return False
 
     return True
