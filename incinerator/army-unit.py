@@ -1,18 +1,21 @@
 class Army:
-
     def train_swordsman(self, name):
         return self._train_unit(Swordsman, name)
 
     def train_lancer(self, name):
-        return self._train_unit(Archer, name)
+        return self._train_unit(Lancer, name)
 
     def train_archer(self, name):
         return self._train_unit(Archer, name)
 
     def _train_unit(self, klass, name):
         unit = klass()
-        army_nation = type(self).__name__.strip("Army")
-        unit.introduce = lambda : f"{klass} {name}, {army_nation} {lower(type(klass).__name__)}"
+
+        nation = type(self).__name__.replace("Army", "")
+        nation_type = getattr(klass, nation.lower())
+        general_type = type(unit).__name__.lower()
+
+        unit.introduce = lambda: f"{nation_type} {name}, {nation} {general_type}"
         return unit
 
 
@@ -39,6 +42,7 @@ class EuropeanArmy(Army):
     pass
 
 
+# fmt: off
 if __name__ == '__main__':
     #These "asserts" using only for self-checking and not necessary for auto-testing
 
@@ -56,7 +60,7 @@ if __name__ == '__main__':
     assert soldier_1.introduce() == "Knight Jaks, European swordsman"
     assert soldier_2.introduce() == "Raubritter Harold, European lancer"
     assert soldier_3.introduce() == "Ranger Robin, European archer"
-
+    
     assert soldier_4.introduce() == "Samurai Kishimoto, Asian swordsman"
     assert soldier_5.introduce() == "Ronin Ayabusa, Asian lancer"
     assert soldier_6.introduce() == "Shinobi Kirigae, Asian archer"
